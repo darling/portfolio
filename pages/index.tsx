@@ -207,6 +207,10 @@ export default function Home() {
 						</span>{' '}
 						trying to find out what he wants to do with his time.
 					</h1>
+					<p>
+						In the meantime, however, he's learning and developing
+						projects using new technologies.
+					</p>
 					<div className={classNames('flex flex-row space-x-6')}>
 						{urls.map((item) => (
 							<a
