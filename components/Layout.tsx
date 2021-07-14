@@ -32,7 +32,7 @@ const Layout: FC = (props) => {
 					/>
 					<meta
 						property="og:image"
-						content="https://files.catbox.moe/1wt75c.webp"
+						content="https://i.imgur.com/S4eZf6D.gif"
 					/>
 					{/* Twitter */}
 					<meta
@@ -50,10 +50,14 @@ const Layout: FC = (props) => {
 					/>
 					<meta
 						property="twitter:image"
-						content="https://files.catbox.moe/1wt75c.webp"
+						content="https://i.imgur.com/S4eZf6D.gif"
 					/>
 				</div>
 			</Head>
+			<title>
+				Safe is a Developer trying to find out what he wants to do with
+				his time.
+			</title>
 			<div className="min-h-screen bg-gray-900 overflow-scroll">
 				{props.children}
 			</div>
