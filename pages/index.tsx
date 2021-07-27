@@ -59,7 +59,7 @@ interface IProjects {
 	title: string;
 	tech: string[];
 	description: string;
-	href: string;
+	href?: string;
 }
 
 const projects: IProjects[] = [
@@ -78,17 +78,23 @@ const projects: IProjects[] = [
 		href: 'https://ferris.gg/',
 	},
 	{
+		title: 'Bruhhouse (Utility for toyhou.se)',
+		tech: ['React', 'Next.js', 'Tailwind', 'Bootstrap', 'Templating'],
+		description:
+			'This website takes code from creators (manually) and converts it into a really ugly form that end users could use to generate "codes" for their characters and profiles onsite. It is somewhat robust and really easy to manage codewise. This project is new and was created recently.',
+		href: 'https://bruhhouse.vercel.app/',
+	},
+	{
 		title: 'Ferris Docs',
 		tech: ['React', 'Gatsby', 'Tailwind', 'GraphQL'],
 		description:
 			'Documentation for the Ferris.gg website. Completely independant from the original project, uses Gatsby and custom components to provide information to users.',
-		href: 'https://github.com/darling/ferris-docs',
 	},
 	{
 		title: 'Covid (tracker)',
 		tech: ['React', 'Bulma', 'GraphQL'],
 		description:
-			'My first React project, used external APIs to give numbers and charts to users. Won 2nd place in the 2019 COVID-19 Repl.it Hackathon.',
+			'My first React project created in High School, used external APIs to give numbers and charts to users. Won 2nd place in the 2019 COVID-19 Repl.it Hackathon.',
 		href: 'https://github.com/darling/covid',
 	},
 ];
