@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Layout } from '../components/Layout';
 import { Disclosure } from '@headlessui/react';
 
-const names = ['Safe', 'Carter', 'Wrr'];
+const names = ['Safe', 'Carter'];
 
 const jobs = [
 	'Developer',
@@ -78,7 +78,7 @@ const projects: IProjects[] = [
 		href: 'https://ferris.gg/',
 	},
 	{
-		title: 'Bruhhouse (Utility for toyhou.se)',
+		title: 'Bruhhouse',
 		tech: ['React', 'Next.js', 'Tailwind', 'Bootstrap', 'Templating'],
 		description:
 			'This website takes code from creators (manually) and converts it into a really ugly form that end users could use to generate "codes" for their characters and profiles onsite. It is somewhat robust and really easy to manage codewise. This project is new and was created recently.',
@@ -96,6 +96,13 @@ const projects: IProjects[] = [
 		description:
 			'My first React project created in High School, used external APIs to give numbers and charts to users. Won 2nd place in the 2019 COVID-19 Repl.it Hackathon.',
 		href: 'https://github.com/darling/covid',
+	},
+	{
+		title: 'Character Checker',
+		tech: ['React', 'Next.js', 'Tailwind'],
+		description:
+			'This website takes strings input by a user and highlights wierd or unexpected characters.',
+		href: 'https://github.com/darling/characterchecker',
 	},
 ];
 
