@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.3.0",
+    "@tailwindcss/typography": "^0.4.1",
     "lodash": "^4.17.21",
     "next": "latest",
     "prettier": "^2.3.2",

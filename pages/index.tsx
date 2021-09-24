@@ -2,8 +2,9 @@ import { sample } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Layout } from '../components/Layout';
 import { Disclosure } from '@headlessui/react';
+import { colorSchemes } from '../util/colors';
 
-const names = ['Safe', 'Carter'];
+const names = ['Carter'];
 
 const jobs = [
 	'Developer',
@@ -13,46 +14,8 @@ const jobs = [
 	'Hobbyist',
 	'Programmer',
 	'Student Programmer',
-];
-
-// No template strings because of purgecss
-
-const colorSchemes: { text: string; hoverText: string; accent: string }[] = [
-	{
-		text: 'text-red-50',
-		hoverText: 'hover:text-red-300',
-		accent: 'text-red-500',
-	},
-	{
-		text: 'text-blue-50',
-		hoverText: 'hover:text-blue-300',
-		accent: 'text-blue-500',
-	},
-	{
-		text: 'text-green-50',
-		hoverText: 'hover:text-green-300',
-		accent: 'text-green-500',
-	},
-	{
-		text: 'text-yellow-50',
-		hoverText: 'hover:text-yellow-300',
-		accent: 'text-yellow-500',
-	},
-	{
-		text: 'text-indigo-50',
-		hoverText: 'hover:text-indigo-300',
-		accent: 'text-indigo-500',
-	},
-	{
-		text: 'text-pink-50',
-		hoverText: 'hover:text-pink-300',
-		accent: 'text-pink-500',
-	},
-	{
-		text: 'text-orange-50',
-		hoverText: 'hover:text-orange-300',
-		accent: 'text-orange-500',
-	},
+	'Cool Guy',
+	'[Click Me]',
 ];
 
 interface IProjects {
@@ -63,6 +26,21 @@ interface IProjects {
 }
 
 const projects: IProjects[] = [
+	{
+		title: 'Shoku.gg',
+		tech: [
+			'React',
+			'Next.js',
+			'Tailwind',
+			'PostgreSQL',
+			'Prisma',
+			'Discord.js',
+			'Stripe',
+		],
+		description:
+			'A successor to the Community Management Discord Bot, Ferris.gg. Shoku is a community management platform that focuses on user engagement and interaction within their given communitites through a food themed game.',
+		href: 'https://shoku.gg/',
+	},
 	{
 		title: 'Ferris.gg',
 		tech: [
@@ -109,25 +87,6 @@ const projects: IProjects[] = [
 const colorTransition = 'transition duration-200';
 
 const urls = [
-	{
-		svg: (
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				fill="none"
-				viewBox="0 0 24 24"
-				stroke="currentColor"
-			>
-				<path
-					strokeLinecap="round"
-					strokeLinejoin="round"
-					strokeWidth={2}
-					d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-				/>
-			</svg>
-		),
-		href: 'https://ferris.gg/',
-		label: 'Discord',
-	},
 	{
 		svg: (
 			<svg
@@ -193,7 +152,7 @@ export default function Home() {
 				<div
 					className={classNames(
 						color.text,
-						'max-w-4xl mx-auto py-16 px-4 sm:px-6 lg:px-8 space-y-8 font-mono'
+						'max-w-4xl mx-auto py-16 px-4 sm:px-6 lg:px-8 space-y-8 font-mono '
 					)}
 				>
 					<h1 className="text-3xl sm:text-5xl select-none">
@@ -201,7 +160,7 @@ export default function Home() {
 							className={classNames(
 								color.hoverText,
 								colorTransition,
-								'cursor-pointer'
+								'cursor-pointer hover:underline'
 							)}
 							onClick={() => rePickElements()}
 						>
@@ -212,7 +171,7 @@ export default function Home() {
 							className={classNames(
 								color.hoverText,
 								colorTransition,
-								'cursor-pointer'
+								'cursor-pointer hover:underline '
 							)}
 							onClick={() => rePickElements()}
 						>
