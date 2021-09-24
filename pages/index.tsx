@@ -282,6 +282,8 @@ export default function Home() {
 							);
 						})}
 					</div>
+					<h2 className="text-lg">Blog</h2>
+					<a href="https://blog.ey.lc/">Click Me</a>
 				</div>
 			</div>
 			<div
