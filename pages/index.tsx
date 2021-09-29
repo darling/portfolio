@@ -1,8 +1,11 @@
-import { sample } from 'lodash';
+import { drop, join, sample, take, toNumber } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Layout } from '../components/Layout';
 import { Disclosure } from '@headlessui/react';
 import { colorSchemes } from '../util/colors';
+import { GetServerSideProps, GetStaticProps } from 'next';
+import axios from 'axios';
+import { formatDistance } from 'date-fns';
 
 const names = ['Carter'];
 
@@ -131,10 +134,29 @@ function classNames(...classes: any[]) {
 	return classes.filter(Boolean).join(' ');
 }
 
-export default function Home() {
+export default function Home(props: {
+	lastfm: {
+		recenttracks: {
+			track: {
+				name: string;
+				artist: { mbid: string; '#text': string };
+				url: string;
+				image: { size: string; '#text': string }[];
+				'@attr'?: { nowplaying: boolean };
+				date?: { uts: string; '#text': string };
+				mbid: string;
+			}[];
+		};
+	};
+}) {
 	const [job, setJob] = useState(jobs[0]);
 	const [color, setColor] = useState(colorSchemes[0]);
 	const [name, setName] = useState(names[0]);
+
+	const latestTrack = props.lastfm.recenttracks.track[0];
+	const [albumImg, setAlbumImg] = useState(latestTrack.image[3]['#text']);
+
+	const recentTracks = take(drop(props.lastfm.recenttracks.track, 1), 5);
 
 	const rePickElements = () => {
 		setName(sample(names));
@@ -282,6 +304,86 @@ export default function Home() {
 							);
 						})}
 					</div>
+					<h2 className="text-lg">Music</h2>
+					<div className="grid md:grid-cols-4 gap-4">
+						<div className="flex flex-col gap-4 col-span-3">
+							<p>
+								{latestTrack['@attr']?.nowplaying
+									? 'At this very moment I am listening to '
+									: `${formatDistance(
+											new Date(
+												toNumber(latestTrack.date.uts) *
+													1000
+											),
+											new Date(),
+											{ addSuffix: true }
+									  )} I listened to `}
+								<a
+									href={latestTrack.url}
+									className={classNames(
+										'underline',
+										color.hoverText,
+										colorTransition
+									)}
+								>
+									{latestTrack.name} by{' '}
+									{latestTrack.artist['#text']}
+								</a>
+								.
+							</p>
+							<p>
+								I like other songs too, in fact some of my
+								recent songs include{' '}
+							</p>
+							<ul>
+								{recentTracks.map((track) => (
+									<li
+										onMouseEnter={() => {
+											setAlbumImg(
+												track.image[3]['#text']
+											);
+										}}
+										onMouseLeave={() => {
+											setAlbumImg(
+												latestTrack.image[3]['#text']
+											);
+										}}
+										className={classNames(
+											color.hoverText,
+											colorTransition
+										)}
+									>
+										<span className="text-gray-500 font-bold">
+											-
+										</span>{' '}
+										<a href={track.url}>
+											{track.artist['#text']} -{' '}
+											{track.name}
+										</a>{' '}
+										<span className="text-xs text-gray-500">
+											(
+											{formatDistance(
+												new Date(
+													toNumber(track.date.uts) *
+														1000
+												),
+												new Date(),
+												{ addSuffix: true }
+											)}
+											)
+										</span>
+									</li>
+								))}
+							</ul>
+						</div>
+						<div>
+							<img
+								src={albumImg}
+								alt={'Album Cover Art'}
+								className="rounded-lg w-full"
+							/>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div
@@ -305,3 +407,16 @@ export default function Home() {
 		</Layout>
 	);
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+	const res = await axios.get(
+		`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=safebell&api_key=${process.env.LASTFM_API}&format=json`
+	);
+
+	return {
+		props: {
+			lastfm: res.data,
+		},
+		revalidate: 10,
+	};
+};
