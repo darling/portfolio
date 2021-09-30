@@ -5,7 +5,7 @@ import { Disclosure } from '@headlessui/react';
 import { colorSchemes } from '../util/colors';
 import { GetServerSideProps, GetStaticProps } from 'next';
 import axios from 'axios';
-import { formatDistance } from 'date-fns';
+import { differenceInSeconds, formatDistance } from 'date-fns';
 
 const names = ['Carter'];
 
@@ -408,15 +408,28 @@ export default function Home(props: {
 	);
 }
 
-export const getStaticProps: GetStaticProps = async () => {
-	const res = await axios.get(
-		`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=safebell&api_key=${process.env.LASTFM_API}&format=json`
-	);
+let lastChecked: Date | undefined = undefined;
+let data: any;
+
+export const getServerSideProps: GetServerSideProps = async () => {
+	if (
+		!lastChecked ||
+		Math.abs(differenceInSeconds(new Date(), lastChecked)) > 10
+	) {
+		console.log('Fetching');
+
+		data = (
+			await axios.get(
+				`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=safebell&api_key=${process.env.LASTFM_API}&format=json`
+			)
+		).data;
+
+		lastChecked = new Date();
+	}
 
 	return {
 		props: {
-			lastfm: res.data,
+			lastfm: data,
 		},
-		revalidate: 10,
 	};
 };
