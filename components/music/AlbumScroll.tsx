@@ -1,4 +1,4 @@
-import { formatDistance, formatRelative } from 'date-fns';
+import { formatDistance } from 'date-fns';
 import {
 	animate,
 	motion,
@@ -6,9 +6,10 @@ import {
 	useMotionValue,
 	useTransform,
 } from 'framer-motion';
-import { random, sample, toNumber } from 'lodash';
+import { toNumber } from 'lodash';
 import { FC, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+
 import { ITrack } from '../../types/music';
 import { classNames } from '../../util/colors';
 
@@ -16,6 +17,26 @@ const colorCards = [
 	{
 		bg: 'bg-green-300',
 		text: 'text-blue-800',
+	},
+	{
+		bg: 'bg-red-300',
+		text: 'text-pink-500',
+	},
+	{
+		bg: 'bg-blue-300',
+		text: 'text-purple-600',
+	},
+	{
+		bg: 'bg-yellow-300',
+		text: 'text-blue-500',
+	},
+	{
+		bg: 'bg-indigo-300',
+		text: 'text-red-400',
+	},
+	{
+		bg: 'bg-pink-300',
+		text: 'text-yellow-400',
 	},
 ];
 
@@ -44,6 +65,8 @@ const Album: FC<{
 		<motion.li
 			className="px-3 md:px-4 flex-none"
 			initial={false}
+			onMouseEnter={() => setStraight(true)}
+			onMouseLeave={() => setStraight(false)}
 			animate={
 				straight
 					? { rotate: 0 }
@@ -53,38 +76,62 @@ const Album: FC<{
 		>
 			<motion.figure
 				className={classNames(
-					'flex-none overflow-hidden rounded-lg w-80 shadow-lg',
+					'flex-none overflow-hidden rounded-lg w-52 md:w-80 shadow-lg',
 					color.bg
 				)}
 			>
 				<div className="bg-white p-3">
 					<h3 className="tracking-wide">
-						<span className={classNames('font-bold', color.text)}>
-							{track.name}
-						</span>{' '}
-						by{' '}
-						<span
+						<a
+							href={track.url}
 							className={classNames(
-								'font-bold block',
+								'font-bold hover:underline',
+								color.text
+							)}
+						>
+							{track.name}
+						</a>{' '}
+						by{' '}
+						<a
+							href={`https://www.last.fm/music/${track.artist['#text']}`}
+							className={classNames(
+								'font-bold hover:underline block',
 								color.text
 							)}
 						>
 							{track.artist['#text']}
-						</span>
+						</a>
 					</h3>
 				</div>
 				<div className="p-3">
-					Listened to{' '}
-					{formatDistance(
-						new Date(
-							toNumber(track.date?.uts || Date.now() / 1000) *
-								1000
-						),
-						new Date(),
-						{ addSuffix: true }
-					)}
-					.
+					<p className="text-gray-700 italic">
+						Listened to{' '}
+						{formatDistance(
+							new Date(
+								toNumber(track.date?.uts || Date.now() / 1000) *
+									1000
+							),
+							new Date(),
+							{ addSuffix: true }
+						)}
+						.
+					</p>
 				</div>
+				<motion.div
+					animate={
+						straight
+							? { rotate: 0 }
+							: { rotate: [-1, 2, 1, -2, 0][index % 5] }
+					}
+					className={classNames(
+						'absolute w-20 -mt-8 right-0 p-1 rounded-md',
+						color.bg
+					)}
+				>
+					<a href={track.url}>
+						<img src={track.image[3]['#text']} alt="" />
+					</a>
+				</motion.div>
 			</motion.figure>
 			{/* <motion.img
 				className="flex-none overflow-hidden rounded-lg w-32 h-32"
@@ -103,7 +150,7 @@ export const Albums: FC<{ tracks: ITrack[] }> = ({ tracks }) => {
 		rootMargin: '100px',
 	});
 
-	const [duration, setDuration] = useState(250);
+	const [duration, setDuration] = useState(500);
 
 	useEffect(() => {
 		if (!inView) return;
@@ -122,8 +169,8 @@ export const Albums: FC<{ tracks: ITrack[] }> = ({ tracks }) => {
 		<div
 			ref={inViewRef}
 			className="relative"
-			onMouseEnter={() => setDuration(500)}
-			onMouseLeave={() => setDuration(250)}
+			onMouseEnter={() => setDuration(1000)}
+			onMouseLeave={() => setDuration(500)}
 		>
 			<div className="flex overflow-hidden">
 				<ul className="flex items-center w-full py-24">
