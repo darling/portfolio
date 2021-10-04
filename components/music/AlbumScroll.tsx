@@ -76,7 +76,7 @@ const Album: FC<{
 		>
 			<motion.figure
 				className={classNames(
-					'flex-none overflow-hidden rounded-lg w-52 md:w-80 shadow-lg',
+					'flex-none overflow-hidden rounded-lg w-52 h-52 md:w-80 md:h-80 shadow-lg',
 					color.bg
 				)}
 			>
@@ -103,7 +103,7 @@ const Album: FC<{
 						</a>
 					</h3>
 				</div>
-				<div className="p-3">
+				{/* <div className="p-3">
 					<p className="text-gray-700 italic">
 						Listened to{' '}
 						{formatDistance(
@@ -116,17 +116,14 @@ const Album: FC<{
 						)}
 						.
 					</p>
-				</div>
+				</div> */}
 				<motion.div
 					animate={
 						straight
 							? { rotate: 0 }
 							: { rotate: [-1, 2, 1, -2, 0][index % 5] }
 					}
-					className={classNames(
-						'absolute w-20 -mt-8 right-0 p-1 rounded-md',
-						color.bg
-					)}
+					className={classNames('absolute p-1 rounded-md', color.bg)}
 				>
 					<a href={track.url}>
 						<img src={track.image[3]['#text']} alt="" />
@@ -173,7 +170,7 @@ export const Albums: FC<{ tracks: ITrack[] }> = ({ tracks }) => {
 			onMouseLeave={() => setDuration(500)}
 		>
 			<div className="flex overflow-hidden">
-				<ul className="flex items-center w-full py-24">
+				<ul className="flex items-center w-full py-32">
 					{tracks.map((track, i) => (
 						<Album
 							key={i}
