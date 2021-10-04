@@ -39,3 +39,7 @@ export const colorSchemes: {
 		accent: 'text-orange-500',
 	},
 ];
+
+export function classNames(...classes: any[]) {
+	return classes.filter(Boolean).join(' ');
+}

@@ -4,9 +4,7 @@ import React, { FC } from 'react';
 const Layout: FC = (props) => {
 	return (
 		<>
-			<div className="min-h-screen bg-gray-900 overflow-scroll">
-				{props.children}
-			</div>
+			<div className="min-h-screen overflow-hidden">{props.children}</div>
 		</>
 	);
 };

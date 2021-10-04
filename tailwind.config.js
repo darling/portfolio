@@ -46,10 +46,12 @@ module.exports = {
 					},
 				},
 			}),
+			colors: {
+				gray: colors.blueGray,
+			},
 		},
-		colors: {
-			...colors,
-			gray: colors.warmGray,
+		fontFamily: {
+			sans: ['Montserrat', 'sans-serif'],
 		},
 	},
 	variants: {
