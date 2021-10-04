@@ -29,7 +29,7 @@ export default function Home(props: { lastfm: ITrack[] }) {
 					In the meantime, however, he is building cool projects by
 					using new technologies.
 				</p>
-				<p>
+				{/* <p>
 					Try taking a look at what he's working on{' '}
 					<Link href="/projects">
 						<a className="hover:text-red-400 font-bold transition duration-200 text-blue-400 md:text-gray-800">
@@ -37,7 +37,7 @@ export default function Home(props: { lastfm: ITrack[] }) {
 						</a>
 					</Link>
 					.
-				</p>
+				</p> */}
 				<p>
 					Perhaps you could get in contact with him through{' '}
 					<a
