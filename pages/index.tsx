@@ -2,12 +2,11 @@ import axios from 'axios';
 import { differenceInSeconds } from 'date-fns';
 import { GetServerSideProps } from 'next';
 import React from 'react';
-import Link from 'next/link';
 
-import { Layout } from '../components/Layout';
-import { head } from 'lodash';
-import { ITrack } from '../types/music';
 import { MusicSection } from '../components/home/MusicSection';
+import { Layout } from '../components/Layout';
+import { ProjectList } from '../components/portfolio/ProjectList';
+import { ITrack } from '../types/music';
 
 export default function Home(props: { lastfm: ITrack[] }) {
 	const tracks = props.lastfm;
@@ -29,15 +28,7 @@ export default function Home(props: { lastfm: ITrack[] }) {
 					In the meantime, however, he is building cool projects by
 					using new technologies.
 				</p>
-				{/* <p>
-					Try taking a look at what he's working on{' '}
-					<Link href="/projects">
-						<a className="hover:text-red-400 font-bold transition duration-200 text-blue-400 md:text-gray-800">
-							here
-						</a>
-					</Link>
-					.
-				</p> */}
+
 				<p>
 					Perhaps you could get in contact with him through{' '}
 					<a
@@ -60,6 +51,11 @@ export default function Home(props: { lastfm: ITrack[] }) {
 					or related already though, so feel free to contact him there
 					if you have it.
 				</p>
+			</div>
+			<div className="bg-pink-100 py-36 selection:bg-purple-400 selection:text-blue-100">
+				<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col gap-8 md:gap-16 sm:text-3xl text-lg">
+					<ProjectList />
+				</div>
 			</div>
 			<MusicSection tracks={tracks} />
 		</Layout>
