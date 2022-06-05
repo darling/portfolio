@@ -1,10 +1,17 @@
-export interface IPortfolioProject {
+export interface IProjectData {
 	title: string;
 	description: string;
-	link: string;
-	image: string;
+	links: IProjectLink[];
+	images: IProjectPhoto[];
+	markDownContent: string;
 }
 
-export interface IPortfolioProjects {
-	projects: IPortfolioProject[];
+export interface IProjectLink {
+	name: string;
+	url: string;
+}
+
+export interface IProjectPhoto {
+	name: string;
+	url: string;
 }

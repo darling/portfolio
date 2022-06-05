@@ -1,89 +1,172 @@
-import axios from 'axios';
-import { differenceInSeconds } from 'date-fns';
-import { GetServerSideProps } from 'next';
-import React from 'react';
+import { random } from 'lodash';
+import Link from 'next/link';
+import React, { useState } from 'react';
 
-import { MusicSection } from '../components/home/MusicSection';
 import { Layout } from '../components/Layout';
-import { ProjectList } from '../components/portfolio/ProjectList';
-import { ITrack } from '../types/music';
+import { useMusicContext } from '../context/musicContext';
 
-export default function Home(props: { lastfm: ITrack[] }) {
-	const tracks = props.lastfm;
+import { motion, Variants } from 'framer-motion';
+
+const links = [
+	{
+		href: '/about',
+		title: 'About',
+	},
+	{
+		href: '/portfolio',
+		title: 'Previous Work',
+	},
+	// {
+	// 	href: '/contact',
+	// 	title: 'Contact',
+	// },
+];
+
+export default function Home() {
+	const music = useMusicContext();
+	const [updateState, setUpdateState] = useState(0);
 
 	return (
 		<Layout>
-			<div className="max-w-4xl min-h-full mx-auto px-4 sm:px-6 lg:px-8 py-36 flex flex-col gap-8 md:gap-16 sm:text-3xl text-lg">
-				<h1 className="text-4xl sm:text-7xl font-bold">
-					<span className="transition duration-100 hover:text-red-400 text-red-400 md:text-gray-800">
-						Safe
-					</span>{' '}
-					is a{' '}
-					<span className="transition duration-100 hover:text-green-400 text-green-400 md:text-gray-800">
-						Developer
-					</span>{' '}
-					trying to figure out what he wants to do with his time.
-				</h1>
-				<p>
-					In the meantime, however, he is building cool projects by
-					using new technologies.
-				</p>
+			{music.uniqueMiddleColors.map((color, i) => {
+				const left = random(50, 80);
 
-				<p>
-					Perhaps you could get in contact with him through{' '}
-					<a
-						href="https://github.com/darling"
-						className="hover:text-red-400 font-bold transition duration-200 text-indigo-400 md:text-gray-800"
-					>
-						Github
-					</a>{' '}
-					or{' '}
-					<a
-						href="mailto:c@ey.lc"
-						className="hover:text-red-400 font-bold transition duration-200 text-pink-400 md:text-gray-800"
-					>
-						Email
-					</a>
-					. There's a good chance that you know him through{' '}
-					<span className="font-bold text-indigo-400 md:text-gray-800 md:font-normal">
-						Discord
-					</span>{' '}
-					or related already though, so feel free to contact him there
-					if you have it.
-				</p>
-			</div>
-			<div className="bg-pink-100 py-36 selection:bg-purple-400 selection:text-blue-100">
-				<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col gap-8 md:gap-16 sm:text-3xl text-lg">
-					<ProjectList />
+				const variants: Variants = {
+					initial: {
+						opacity: 0,
+						top: '100%',
+						left: `${left}%`,
+						backgroundColor: music.backgroundColor,
+					},
+					exit: {
+						opacity: 0,
+						top: '100%',
+						left: `${left}%`,
+						transition: { delay: i * 0.01, ease: 'easeIn' },
+						backgroundColor: music.backgroundColor,
+					},
+				};
+
+				return (
+					<motion.div
+						animate={{
+							opacity: 1,
+							transition: { delay: i * 0.1 },
+							top: `${random(0, 90)}%`,
+							left: `${left}%`,
+							width: `${random(5, 20)}%`,
+							height: `${random(5, 20)}%`,
+							backgroundColor: color,
+						}}
+						initial="initial"
+						exit="exit"
+						style={{
+							zIndex: i,
+						}}
+						variants={variants}
+						className="fixed h-44 w-44 rounded-full hidden lg:block"
+						key={i}
+						onClick={() => {
+							// redraw this component
+							setUpdateState(updateState + 1);
+						}}
+					/>
+				);
+			})}
+			<div
+				style={{ zIndex: 1 }}
+				className="flex-none flex flex-col gap-4"
+			>
+				<h1 className="text-7xl font-bold">Carter Black</h1>
+				<div className="flex flex-row">
+					{music.uniqueMiddleColors.map((color, i) => {
+						const variants: Variants = {
+							initial: {
+								opacity: 0,
+								backgroundColor: music.backgroundColor,
+							},
+							exit: {
+								opacity: 0,
+								backgroundColor: music.backgroundColor,
+							},
+						};
+
+						return (
+							<motion.div
+								key={i}
+								animate={{
+									opacity: 1,
+									backgroundColor: color,
+									transition: { delay: i * 0.07 },
+								}}
+								initial="initial"
+								exit="exit"
+								variants={variants}
+								className="h-8 w-8"
+							/>
+						);
+					})}
 				</div>
 			</div>
-			<MusicSection tracks={tracks} />
+			<div
+				style={{ zIndex: 1 }}
+				className="flex-none flex flex-col gap-4"
+			>
+				{links.map((link) => (
+					<Link href={link.href} key={link.title}>
+						<a className="text-2xl font-bold">{link.title}</a>
+					</Link>
+				))}
+				<button
+					onClick={() => {
+						music.toggleEnabled();
+					}}
+					className="text-left"
+				>
+					<a className=" text-2xl font-bold">
+						{!music.enabled
+							? "Wanna see what I'm listening to?"
+							: 'Disable Music Theme'}
+					</a>
+				</button>
+			</div>
+			<div className="flex-grow"></div>
+			<motion.div
+				animate={{
+					opacity: music.enabled ? 1 : 0,
+				}}
+				className="gap-4 flex flex-row h-24 lg:h-56 relative"
+				key={music.currentlyPlaying.name}
+			>
+				<motion.div
+					initial={{ opacity: 0 }}
+					animate={{
+						opacity: 1,
+					}}
+					exit={{
+						opacity: 0,
+					}}
+					className="w-24 lg:w-56 rounded-xl overflow-hidden"
+				>
+					<img
+						src={music.currentlyPlaying.image}
+						className="max-w-full h-auto"
+					/>
+				</motion.div>
+				<div className="flex flex-col justify-start">
+					<p>Carter is listening to:</p>
+					<h2 className="font-bold">
+						<a href={music.currentlyPlaying.url}>
+							{music.currentlyPlaying.name}
+						</a>
+					</h2>
+					by{' '}
+					{music.currentlyPlaying.artist
+						.map((artist) => artist.name)
+						.join(', ')}
+					<h2></h2>
+				</div>
+			</motion.div>
 		</Layout>
 	);
 }
-
-let lastChecked: Date | undefined = undefined;
-let data: any;
-
-export const getServerSideProps: GetServerSideProps = async () => {
-	if (
-		!lastChecked ||
-		Math.abs(differenceInSeconds(new Date(), lastChecked)) > 10
-	) {
-		console.log('Fetching');
-
-		data = (
-			await axios.get(
-				`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=safebell&api_key=${process.env.LASTFM_API}&format=json`
-			)
-		).data;
-
-		lastChecked = new Date();
-	}
-
-	return {
-		props: {
-			lastfm: data['recenttracks']['track'],
-		},
-	};
-};

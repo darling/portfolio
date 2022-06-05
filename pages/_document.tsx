@@ -62,7 +62,7 @@ class MyDocument extends Document {
 						/>
 					</div>
 				</Head>
-				<body>
+				<body className="bg-white">
 					<Main />
 					<NextScript />
 				</body>

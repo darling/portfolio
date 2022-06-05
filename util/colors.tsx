@@ -1,3 +1,5 @@
+import { sample } from 'lodash';
+
 export const colorSchemes: {
 	text: string;
 	hoverText: string;
@@ -51,3 +53,28 @@ export const colorSchemes: {
 export function classNames(...classes: any[]) {
 	return classes.filter(Boolean).join(' ');
 }
+
+export const getRandomColorSet = () => {
+	const givenColorSchemes = {
+		Kitty: [
+			'#441385',
+			'#5111c7',
+			'#541ca0',
+			'#6934c7',
+			'#8a3db7',
+			'#924be7',
+			'#c74abf',
+			'#cd4ee4',
+			'#a985c4',
+			'#b689ef',
+			'#ee81e2',
+			'#f789f6',
+			'#c5baf4',
+			'#cebddf',
+			'#eebff3',
+			'#ece3f4',
+		],
+	};
+
+	return sample(givenColorSchemes);
+};

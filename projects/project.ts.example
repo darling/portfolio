@@ -1,0 +1,21 @@
+import { IProjectData } from '../types/projects';
+
+const project: IProjectData = {
+	title: 'Project',
+	description: 'Project_description',
+	links: [
+		{
+			name: 'Project_link_name',
+			url: 'Project_link_url',
+		},
+	],
+	images: [
+		{
+			name: 'Project_image_name',
+			url: 'Project_image_url',
+		},
+	],
+	markDownContent: 'Project_markdown_content',
+};
+
+export default project;
