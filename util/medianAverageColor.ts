@@ -1,31 +1,5 @@
-import { createCanvas, Image } from 'canvas';
-import {
-	min,
-	max,
-	map,
-	reduce,
-	round,
-	sortBy,
-	chunk,
-	toString,
-	padStart,
-} from 'lodash';
+import { min, max, map, reduce, round, sortBy, chunk, padStart } from 'lodash';
 import { RGBColor } from '../types/color';
-
-export const getColorsFromImage = (img: Image) => {
-	const canvas = createCanvas(img.width, img.height);
-	const ctx = canvas.getContext('2d');
-	ctx.drawImage(img, 0, 0);
-	const imageData = ctx.getImageData(0, 0, img.width, img.height);
-	const srgbPixelData = chunk(imageData.data, 4);
-	const rgbPixelData: RGBColor[] = srgbPixelData.map(([r, g, b, _]) => ({
-		r,
-		g,
-		b,
-	}));
-
-	return findAverageColorsFromPixels(rgbPixelData);
-};
 
 export const findAverageColorsFromPixels = (pixels: RGBColor[]) => {
 	const rgbList = quantization(pixels, 4);
